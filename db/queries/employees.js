@@ -22,7 +22,8 @@ export async function createEmployee({ name, birthday, salary }) {
 
 /** @returns all employees */
 export async function getEmployees() {
-  // TODO
+  const { rows } = await db.query(`SELECT * FROM employees ORDER BY id`);
+  return rows;
 }
 
 /**

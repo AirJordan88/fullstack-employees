@@ -2,6 +2,10 @@
   "name": "fullstack-employees",
   "main": "server.js",
   "type": "module",
+  "imports": {
+    "#app": "./app.js",
+    "#db/*": "./db/*"
+  },
   "scripts": {
     "start": "node --env-file=.env server.js",
     "dev": "node --watch --env-file=.env server.js",

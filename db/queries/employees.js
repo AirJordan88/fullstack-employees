@@ -18,34 +18,43 @@ export async function createEmployee({ name, birthday, salary }) {
   }
 }
 
-// === Part 2 ===
-
 /** @returns all employees */
 export async function getEmployees() {
   const { rows } = await db.query(`SELECT * FROM employees ORDER BY id`);
   return rows;
 }
 
-/**
- * @returns the employee with the given id
- * @returns undefined if employee with the given id does not exist
- */
+/** @returns the employee with the given id, or undefined if not found */
 export async function getEmployee(id) {
-  // TODO
+  const { rows } = await db.query(`SELECT * FROM employees WHERE id = $1`, [
+    id,
+  ]);
+  return rows[0];
 }
 
-/**
- * @returns the updated employee with the given id
- * @returns undefined if employee with the given id does not exist
- */
+/** @returns the updated employee with the given id, or undefined if not found */
 export async function updateEmployee({ id, name, birthday, salary }) {
-  // TODO
+  const { rows } = await db.query(
+    `
+    UPDATE employees
+    SET name = $2, birthday = $3, salary = $4
+    WHERE id = $1
+    RETURNING *;
+    `,
+    [id, name, birthday, salary]
+  );
+  return rows[0];
 }
 
-/**
- * @returns the deleted employee with the given id
- * @returns undefined if employee with the given id does not exist
- */
+/** @returns the deleted employee with the given id, or undefined if not found */
 export async function deleteEmployee(id) {
-  // TODO
+  const { rows } = await db.query(
+    `
+    DELETE FROM employees
+    WHERE id = $1
+    RETURNING *;
+    `,
+    [id]
+  );
+  return rows[0];
 }
